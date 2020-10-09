@@ -75,7 +75,7 @@ while not termination_condition:
         prev_model = ["gen{}_ent{}".format(gen, a["index"]) for a in survival]
         for n in range(int(PERTURB_RATIO*N)):
             next_gen.append(perturb(curr_gen[acc_list[n]["index"]]))
-            prev_model.append("gen{}_eng{}".format(gen, acc_list[n]["index"]))
+            prev_model.append("gen{}_ent{}".format(gen, acc_list[n]["index"]))
         print("## Perturbation for next generation done")
         curr_gen = next_gen
 
