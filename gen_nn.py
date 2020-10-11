@@ -2,7 +2,7 @@ import networkx as nx
 
 def gen_nn(G, py_fname, weight_fname, prev_weights):
     batch_size = 100
-    numepochs =  2#100
+    numepochs =  5 #100
     num_inputs = 28 * 28
     num_outputs = 10
     num_hiddennodes = G.number_of_nodes() - num_inputs - num_outputs
@@ -13,7 +13,10 @@ def gen_nn(G, py_fname, weight_fname, prev_weights):
 
     output.write("import tensorflow as tf\n")
     output.write("import pickle\n")
+    output.write("import time\n")
     output.write("\n")
+    output.write("start_time = time.time()\n")
+    output.write("start_clock = time.clock()\n")
     output.write("num_classes = 10\n")
     output.write("img_rows, img_cols = 28, 28\n")
     #output.write("num_channels = 1\n")
@@ -95,6 +98,12 @@ def gen_nn(G, py_fname, weight_fname, prev_weights):
     output.write("print('## Weight saved: {}')\n".format(weight_fname))
 
     output.write("test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)\n")
+    output.write("end_time = time.time()\n")
+    output.write("end_clock = time.clock()\n")
+    output.write("train_time = end_time - start_time\n")
+    output.write("train_clock = end_clock - start_clock\n")
+    output.write("print('Time to train (time)= ', train_time)\n")
+    output.write("print('Time to train (clock)= ', train_clock)\n")
     output.write("print('Final Accuracy =', test_acc)\n")
 
     output.close()

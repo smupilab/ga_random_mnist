@@ -4,9 +4,9 @@ from perturb import perturb
 from gen_nn import gen_nn
 import os
 
-N = 10 # number of population in each generation
+N = 20 # number of population in each generation
 PERTURB_RATIO = 0.5
-PATIENCE = 3
+PATIENCE = 2
 
 # generate N entities
 fcl = gen_fclayer(64, 32)
@@ -40,7 +40,7 @@ while not termination_condition:
         pklname = "run/gen{}_ent{}.pickle".format(gen, i)
         logname = "log/gen{}_ent{}.log".format(gen, i)
         gen_nn(curr_gen[i], py_fname, weight_fname, prev_weights)
-        #nx.write_gpickle(curr_gen[i], pklname)
+        nx.write_gpickle(curr_gen[i], pklname)
         stream = os.popen("python3 {} | tee {}".format(py_fname, logname))
         result = stream.read()
         x = result.find("Final Accuracy =")
@@ -74,8 +74,8 @@ while not termination_condition:
         # perturbation
         prev_model = ["gen{}_ent{}".format(gen, a["index"]) for a in survival]
         for n in range(int(PERTURB_RATIO*N)):
-            next_gen.append(perturb(curr_gen[acc_list[n]["index"]]))
-            prev_model.append("gen{}_ent{}".format(gen, acc_list[n]["index"]))
+            next_gen.append(perturb(curr_gen[survival[n]["index"]]))
+            prev_model.append("gen{}_ent{}".format(gen, survival[n]["index"]))
         print("## Perturbation for next generation done")
         curr_gen = next_gen
 
